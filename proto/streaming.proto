@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package streaming;
+
+option go_package = "https://github.com/thienchuong/golang-file-upload/proto";
+
+
+// The fileupload define
+
+service FileUploadService {
+    rpc DownloadFile(DownloadFileRequest) returns (stream DownloadFileResponse);
+
+    rpc UploadFile(stream UploadFileRequest) returns (UploadFileResponse);
+}
+
+message DownloadFileRequest {
+    string name = 1;
+}
+
+message DownloadFileResponse {
+    bytes content = 1;
+}
+
+message UploadFileRequest {
+    bytes content = 1;
+}
+
+message UploadFileResponse {
+    bytes name = 1;
+}
