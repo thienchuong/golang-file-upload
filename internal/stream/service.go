@@ -52,25 +52,29 @@ func (s Service) DownloadFile(req *proto.DownloadFileRequest, stream proto.FileU
 
 func (s *Service) UploadFile(stream proto.FileUploadService_UploadFileServer) error {
 	// generate file name
-	fileName:= fmt.Sprintf("$s.png", uuid.New().String())
+	fileName := fmt.Sprintf("%s.png", uuid.New().String())
 
 	// create file
-	fo, err:= os.Create(fileName)
+	fo, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
 	defer fo.Close()
 
 	for {
-		res, err:= stream.Recv()
+		// receive chunk
+		res, err := stream.Recv()
 		if err != nil {
-			if err == io.EOF{
-				return stream.SendAndClose(&proto.UploadFileResponse(&proto.UploadFileResponse{Name: fileName})
+			if err == io.EOF {
+				// close stream and send response
+				return stream.SendAndClose(&proto.UploadFileResponse{Name: fileName})
 			}
 			return err
 		}
-		if _, err:= fo.Write(res.Content); err != nil {
-			return fmt.Errorf("failed to write file: %v", err)
+
+		// write chunk to file
+		if _, err := fo.Write(res.Content); err != nil {
+			return fmt.Errorf("failed to write to file %w", err)
 		}
 	}
 }
