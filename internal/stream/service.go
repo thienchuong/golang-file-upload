@@ -6,13 +6,14 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/thienchuong/golang-file-upload/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/cshep4/grpc-course/module3-exercise/proto"
 )
 
 type Service struct {
-	proto.UnimplementedFileUploadServiceServer
+	*proto.UnimplementedFileUploadServiceServer
 }
 
 func (s Service) DownloadFile(req *proto.DownloadFileRequest, stream proto.FileUploadService_DownloadFileServer) error {
@@ -50,7 +51,7 @@ func (s Service) DownloadFile(req *proto.DownloadFileRequest, stream proto.FileU
 	}
 }
 
-func (s *Service) UploadFile(stream proto.FileUploadService_UploadFileServer) error {
+func (s Service) UploadFile(stream proto.FileUploadService_UploadFileServer) error {
 	// generate file name
 	fileName := fmt.Sprintf("%s.png", uuid.New().String())
 
