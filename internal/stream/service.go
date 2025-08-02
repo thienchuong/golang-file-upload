@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/cshep4/grpc-course/module3-exercise/proto"
+	"github.com/thienchuong/golang-file-upload/proto"
 )
 
 type Service struct {
