@@ -68,7 +68,7 @@ func (s Service) UploadFile(stream proto.FileUploadService_UploadFileServer) err
 		if err != nil {
 			if err == io.EOF {
 				// close stream and send response
-				return stream.SendAndClose(&proto.UploadFileResponse{Name: fileName})
+				return stream.SendAndClose(&proto.UploadFileResponse{Name: []byte(fileName)})
 			}
 			return err
 		}
